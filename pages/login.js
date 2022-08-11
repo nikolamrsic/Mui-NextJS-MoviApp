@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { auth } from "../src/firebase";
 import { AuthContext } from "../components/AutProvider";
 import Cookies from 'js-cookie'
-export default function loginpage() {
+export default function Loginpage() {
   
   
   const theme = useTheme();

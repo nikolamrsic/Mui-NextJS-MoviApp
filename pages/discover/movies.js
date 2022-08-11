@@ -36,7 +36,7 @@ export async function getStaticProps(context) {
   }
 }
 
-function fetchMovies (page) {
+function useMovies (page) {
   const { data, error } = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=1224065e5bf1b7cb815a51a5d409fe55&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&with_watch_monetization_types=flatrate`, fetcher)
 
   return {
@@ -60,7 +60,7 @@ export default function Movies({movies,pageProps}) {
   const theme = useTheme(); 
   let[page,setPage]=useState(1)
   let router=useRouter()
-  const { data, isLoading, isError } = fetchMovies(page) 
+  const { data, isLoading, isError } = useMovies(page) 
 
   const updatePage=(event,value)=>{
     setPage(value)
@@ -69,7 +69,7 @@ export default function Movies({movies,pageProps}) {
   const userStatus = React.useContext(AuthContext);
 
   const {user}=useUser()
-  console.log(user,'TESTTTTTTT')
+  
   
   return (
     <div
@@ -95,7 +95,7 @@ export default function Movies({movies,pageProps}) {
 
         </Stack>
         <Grid container  spacing={3} justifyContent='center'   columns={{ xs: 4, sm: 8, md: 12 }}>
-          {data==undefined ? Array.from(new Array(20),(el,ind)=>el=ind).map((el)=><Sceleton/>)  : data.results.map((movie,index)=>{
+          {data==undefined ? Array.from(new Array(20),(el,ind)=>el=ind).map((el,index)=><Sceleton key={index}/>)  : data.results.map((movie,index)=>{
             return  <Grid key={movie.id} item sx={4}>
             <MovieCard key={index} id={movie.id} img={movie.poster_path} title={movie.title}  genr={movie.genre_ids}></MovieCard>
           </Grid>
